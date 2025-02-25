@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Runtime.InteropServices.Swift;
-using Microsoft.VisualBasic;
+﻿using System.Runtime.CompilerServices;
 
 namespace TextEditor;
 
@@ -8,7 +6,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
+        Menu();
     }
 
     static void Menu()
@@ -31,8 +29,49 @@ class Program
     }
 
     static void Open()
-    {}
+    {
+        Console.Clear();
+        Console.WriteLine("Digite o caminho do arquivo.");
+        string path = Console.ReadLine();
+
+        using(var file = new StreamReader(path))
+        {
+            string text = file.ReadToEnd();
+            Console.WriteLine(text);
+        }
+
+        Console.WriteLine("");
+        Console.ReadLine();
+        Menu();
+    }
 
     static void Edit()
-    {}
+    {
+        Console.Clear();
+        Console.WriteLine("Digite seu texto abaixo (ESC para sair).");
+        Console.WriteLine("------------------------------------");
+        
+        string text = "";
+
+        do
+        {
+            text += Console.ReadLine() + System.Environment.NewLine;
+        } while (Console.ReadKey().Key != ConsoleKey.Escape);
+
+        Salvar(text);
+    }
+
+    static void Salvar(string text)
+    {
+        Console.Clear();
+        Console.WriteLine("digite o caminho onde deseja salvar.");
+        string path = Console.ReadLine();
+
+        using (var file = new StreamWriter(path))
+        {
+            file.Write(text);
+        }
+        Console.WriteLine($"Arquivo {path} salvo com sucesso!");
+        Menu();
+    }
 }
